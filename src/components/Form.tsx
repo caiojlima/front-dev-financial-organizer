@@ -1,4 +1,4 @@
-import { Avatar, Button, Grid, Paper, TextField, Typography } from "@mui/material"
+import { Avatar, Button, Grid, Link, Paper, TextField, Typography } from "@mui/material"
 import { useState } from "react";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
@@ -55,6 +55,18 @@ const Form = () => {
             >
               Entrar
             </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="/forgot-password" variant="body2">
+                  Esqueci a senha
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="/register" variant="body2">
+                  {"Não tem uma conta? Registre-se"}
+                </Link>
+              </Grid>
+            </Grid>
           </form>
         </div>
       </Grid>
