@@ -13,6 +13,10 @@ export const firstBoxStyle = {
 }
 
 export const secondBoxStyle = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  flexDirection: "column",
   width: "60%",
   height: '100%',
 }
