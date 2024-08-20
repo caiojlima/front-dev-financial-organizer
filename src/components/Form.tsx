@@ -1,17 +1,37 @@
 import { Avatar, Button, Grid, Link, Paper, TextField, Typography } from "@mui/material"
-import { useState } from "react";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useLogin } from "../hooks/useLogin";
+import { LoginFormInput, loginSchema } from "../schemas/loginSchema";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
+import { warning } from "../styles/toast.style";
+import { getErrorMessage } from "../utils/error.util";
+import { useNavigate } from "react-router-dom";
 
 const Form = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm<LoginFormInput>({
+    resolver: zodResolver(loginSchema)
+  });
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    // Implementar a lógica de autenticação aqui
+  const { loginMutation } = useLogin();
+  const navigator = useNavigate()
+
+  const handleLogin: SubmitHandler<LoginFormInput> = async (data: LoginFormInput) => {
+    try {
+      const { data: { accessToken } } = await loginMutation.mutateAsync(data);
+      navigator("/wallet", { state: accessToken });
+    } catch (e) {
+      if (e instanceof AxiosError)
+        toast.error(getErrorMessage(e), warning)
+      setValue("email", "")
+      setValue("password", "")
+    }
   };
+
   return (
-    <Grid container component="main" sx={ { height: "70%", display: "flex", justifyContent: "center", alignItems: "center" } }>
+    <Grid container component="main" sx={{ height: "70%", display: "flex", justifyContent: "center", alignItems: "center" }}>
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ borderRadius: "20px", height: "70%", padding: "1em" }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Avatar sx={{ m: 1, bgcolor: 'rgba(45, 146, 42, 0.37)' }}>
@@ -20,32 +40,30 @@ const Form = () => {
           <Typography component="h1" variant="h5">
             Login
           </Typography>
-          <form onSubmit={handleSubmit} style={{ width: '100%', marginTop: '8px' }}>
+          <form onSubmit={handleSubmit(handleLogin)} style={{ width: '100%', marginTop: '8px' }}>
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              id="email"
               label="Email"
-              name="email"
               autoComplete="email"
               autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              {...register('email')}
+              error={!!errors.email}
+              helperText={errors.email?.message}
             />
             <TextField
               variant="outlined"
               margin="normal"
-              required
               fullWidth
-              name="password"
               label="Senha"
               type="password"
               id="password"
               autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...register('password')}
+              error={!!errors.password}
+              helperText={errors.password?.message}
             />
             <Button
               type="submit"

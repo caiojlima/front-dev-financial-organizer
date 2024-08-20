@@ -3,6 +3,7 @@ import homeImage from "../assets/home-img.svg";
 import { firstBoxStyle, homeContainerStyle, secondBoxStyle } from "../styles/home.style";
 import Form from "../components/Form";
 import Title from "../components/Title";
+import { Bounce, ToastContainer } from "react-toastify";
 
 const Home = () => {
   return (
