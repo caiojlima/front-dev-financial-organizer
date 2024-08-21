@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { Home, Register } from "./pages";
+import { ForgotPassword, Home, Register, ResetPassword } from "./pages";
 import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
@@ -10,7 +10,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/contact" element={<h1>Aqui é a contact</h1>} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </>
 

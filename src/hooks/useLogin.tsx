@@ -1,11 +1,20 @@
 import { useMutation } from "@tanstack/react-query"
-import { userLogin } from "../services"
-import { LoginFormInput } from "../schemas";
+import { forgotPassword, resetPassword, userLogin } from "../services"
+import { ForgotPasswordInput, LoginFormInput } from "../schemas";
+import { ResetPasswordRequest } from "../types";
 
 export const useLogin = () => {
   const loginMutation = useMutation({
     mutationFn: (data: LoginFormInput) => userLogin(data)
   });
 
-  return { loginMutation }
+  const forgotPasswordMutation = useMutation({
+    mutationFn: (data: ForgotPasswordInput) => forgotPassword(data)
+  });
+
+  const resetPasswordMutation = useMutation({
+    mutationFn: (data: ResetPasswordRequest) => resetPassword(data)
+  })
+
+  return { loginMutation, forgotPasswordMutation, resetPasswordMutation }
 }

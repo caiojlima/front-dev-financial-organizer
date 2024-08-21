@@ -1,5 +1,5 @@
 import { Avatar, Button, Grid, Link, Paper, TextField, Typography } from "@mui/material"
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useLogin } from "../hooks";
 import { LoginFormInput, loginSchema } from "../schemas";
@@ -31,11 +31,11 @@ export const LoginForm = () => {
   };
 
   return (
-    <Grid container component="main" sx={{ height: "65%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ borderRadius: "20px", height: "70%", padding: "1em" }}>
+    <Grid container component="main" sx={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ borderRadius: "20px", padding: "1em" }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Avatar sx={{ m: 1, bgcolor: 'rgba(45, 146, 42, 0.37)' }}>
-            <LockOutlinedIcon />
+            <LockOpenOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Login
@@ -73,7 +73,7 @@ export const LoginForm = () => {
             >
               Entrar
             </Button>
-            <Grid container>
+            <Grid container sx={ { mb: 2 } }>
               <Grid item xs>
                 <Link href="/forgot-password" variant="body2">
                   Esqueci a senha
