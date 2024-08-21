@@ -44,7 +44,7 @@ export const ResetPasswordForm = () => {
             Digite uma nova senha
           </Typography>
           <form onSubmit={handleSubmit(handleForgotPassword)} style={{ width: '100%', marginTop: '8px' }}>
-          <TextField
+            <TextField
               variant="outlined"
               margin="normal"
               fullWidth
