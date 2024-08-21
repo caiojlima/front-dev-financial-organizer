@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query"
-import { userLogin } from "../services/login.service"
-import { toast } from 'react-toastify';
-import { LoginFormInput } from "../schemas/loginSchema";
+import { userLogin } from "../services"
+import { LoginFormInput } from "../schemas";
 
 export const useLogin = () => {
   const loginMutation = useMutation({

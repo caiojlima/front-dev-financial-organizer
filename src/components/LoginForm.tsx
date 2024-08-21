@@ -1,16 +1,16 @@
 import { Avatar, Button, Grid, Link, Paper, TextField, Typography } from "@mui/material"
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useLogin } from "../hooks/useLogin";
-import { LoginFormInput, loginSchema } from "../schemas/loginSchema";
+import { useLogin } from "../hooks";
+import { LoginFormInput, loginSchema } from "../schemas";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
-import { warning } from "../styles/toast.style";
-import { getErrorMessage } from "../utils/error.util";
+import { warning } from "../styles";
+import { getErrorMessage } from "../utils";
 import { useNavigate } from "react-router-dom";
 
-const Form = () => {
+export const LoginForm = () => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<LoginFormInput>({
     resolver: zodResolver(loginSchema)
   });
@@ -31,7 +31,7 @@ const Form = () => {
   };
 
   return (
-    <Grid container component="main" sx={{ height: "70%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+    <Grid container component="main" sx={{ height: "65%", display: "flex", justifyContent: "center", alignItems: "center" }}>
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ borderRadius: "20px", height: "70%", padding: "1em" }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Avatar sx={{ m: 1, bgcolor: 'rgba(45, 146, 42, 0.37)' }}>
@@ -44,11 +44,11 @@ const Form = () => {
             <TextField
               variant="outlined"
               margin="normal"
-              required
               fullWidth
               label="Email"
               autoComplete="email"
               autoFocus
+              type="text"
               {...register('email')}
               error={!!errors.email}
               helperText={errors.email?.message}
@@ -91,5 +91,3 @@ const Form = () => {
     </Grid>
   )
 }
-
-export default Form;

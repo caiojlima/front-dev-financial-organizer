@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
 import homeImage from "../assets/home-img.svg";
 import { firstBoxStyle, homeContainerStyle, secondBoxStyle } from "../styles";
-import { Title, LoginForm } from "../components";
+import { RegisterForm, Title } from "../components";
 
-export const Home = () => {
+export const Register = () => {
   return (
     <Box sx={homeContainerStyle}>
       <Box sx={firstBoxStyle}>
@@ -11,7 +11,7 @@ export const Home = () => {
       </Box>
       <Box sx={secondBoxStyle}>
         <Title />
-        <LoginForm />
+        <RegisterForm />
       </Box>
     </Box>
   );
