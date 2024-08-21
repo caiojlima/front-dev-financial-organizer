@@ -7,12 +7,12 @@ import { AxiosError } from "axios";
 import { warning } from "../styles";
 import { getErrorMessage } from "../utils";
 import { useNavigate } from "react-router-dom";
-import { RegisterFormInput, resetPasswordSchema } from "../schemas";
+import { RegisterFormInput, registerSchema } from "../schemas";
 import { useUserRegister } from "../hooks";
 
 export const RegisterForm = () => {
   const { register, handleSubmit, setValue, trigger, formState: { errors } } = useForm<RegisterFormInput>({
-    resolver: zodResolver(resetPasswordSchema)
+    resolver: zodResolver(registerSchema)
   });
 
   const { userRegisterMutation } = useUserRegister();
