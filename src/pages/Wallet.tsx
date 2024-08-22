@@ -24,7 +24,6 @@ import { UpdateWalletEdit } from '../types';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { warning } from '../styles';
-import { getErrorMessage } from '../utils';
 
 export const WalletPage: FC = () => {
   const [editItem, setEditItem] = useState<UpdateWalletEdit | null>(null);
@@ -55,6 +54,7 @@ export const WalletPage: FC = () => {
     deleteEntryMutation,
     entries,
     total,
+    isLoading,
   } = useWallet({ authorization });
 
   useEffect(() => {
@@ -203,6 +203,7 @@ export const WalletPage: FC = () => {
               variant="contained"
               color="success"
               type="submit"
+              disabled={isLoading}
             >
               {editItem ? 'Editar' : 'Ganho'}
             </Button>
@@ -211,6 +212,7 @@ export const WalletPage: FC = () => {
               variant="contained"
               color="error"
               type="submit"
+              disabled={isLoading}
             >
               {editItem ? 'Editar' : 'Despesa'}
             </Button>
@@ -232,6 +234,7 @@ export const WalletPage: FC = () => {
               sx={{ width: '100%', mb: 1 }}
               variant="contained"
               color="secondary"
+              disabled={isLoading}
               onClick={() => {
                 setEditItem(null);
                 reset();
@@ -295,6 +298,7 @@ export const WalletPage: FC = () => {
                     sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}
                   >
                     <IconButton
+                      disabled={isLoading}
                       onClick={() =>
                         handleEdit({ id, description, value, paymentMethod })
                       }
@@ -303,6 +307,7 @@ export const WalletPage: FC = () => {
                       <EditIcon sx={{ color: 'orange' }} />
                     </IconButton>
                     <IconButton
+                      disabled={isLoading}
                       onClick={() => handleDelete(id.toString())}
                       color="error"
                       id={id.toString()}

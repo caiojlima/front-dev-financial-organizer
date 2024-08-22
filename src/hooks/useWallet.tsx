@@ -101,7 +101,7 @@ export const useWallet = ({
     },
   });
 
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: [QueryKeysEnum.GET_WALLET],
     queryFn: () => getAllWalletsEntries({ authorization, params }),
   });
@@ -112,5 +112,10 @@ export const useWallet = ({
     deleteEntryMutation,
     entries: data?.data.entries,
     total: data?.data.total,
+    isLoading:
+      sendWalletEntryMutation.isPending ||
+      updateEntryMutation.isPending ||
+      deleteEntryMutation.isPending ||
+      isPending,
   };
 };
