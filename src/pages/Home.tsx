@@ -1,7 +1,7 @@
-import { Box } from "@mui/material";
-import homeImage from "../assets/home-img.svg";
-import { firstBoxStyle, homeContainerStyle, secondBoxStyle } from "../styles";
-import { Title, LoginForm } from "../components";
+import { Box } from '@mui/material';
+import homeImage from '../assets/home-img.svg';
+import { firstBoxStyle, homeContainerStyle, secondBoxStyle } from '../styles';
+import { Title, LoginForm } from '../components';
 
 export const Home = () => {
   return (
@@ -15,4 +15,4 @@ export const Home = () => {
       </Box>
     </Box>
   );
-}
+};

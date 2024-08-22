@@ -1,7 +1,7 @@
-import { Box } from "@mui/material";
-import registerImg from "../assets/register-img.svg";
-import { firstBoxStyle, homeContainerStyle, secondBoxStyle } from "../styles";
-import { RegisterForm, Title } from "../components";
+import { Box } from '@mui/material';
+import registerImg from '../assets/register-img.svg';
+import { firstBoxStyle, homeContainerStyle, secondBoxStyle } from '../styles';
+import { RegisterForm, Title } from '../components';
 
 export const Register = () => {
   return (
@@ -15,4 +15,4 @@ export const Register = () => {
       </Box>
     </Box>
   );
-}
+};

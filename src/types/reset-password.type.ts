@@ -1,4 +1,4 @@
 export type ResetPasswordRequest = {
-  password: string
-  authorization: string
-}
+  password: string;
+  authorization: string;
+};

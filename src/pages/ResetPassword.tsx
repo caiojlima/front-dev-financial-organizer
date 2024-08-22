@@ -1,7 +1,7 @@
-import { Box } from "@mui/material";
-import forgotPasswordImg from "../assets/forgot-password-img.svg";
-import { firstBoxStyle, homeContainerStyle, secondBoxStyle } from "../styles";
-import { Title, ResetPasswordForm } from "../components";
+import { Box } from '@mui/material';
+import forgotPasswordImg from '../assets/forgot-password-img.svg';
+import { firstBoxStyle, homeContainerStyle, secondBoxStyle } from '../styles';
+import { Title, ResetPasswordForm } from '../components';
 
 export const ResetPassword = () => {
   return (
@@ -15,4 +15,4 @@ export const ResetPassword = () => {
       </Box>
     </Box>
   );
-}
+};

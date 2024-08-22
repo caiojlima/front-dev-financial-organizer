@@ -1,13 +1,13 @@
-import { Bounce, ToastOptions } from "react-toastify";
+import { Bounce, ToastOptions } from 'react-toastify';
 
 export const warning: ToastOptions = {
-  position: "bottom-right",
+  position: 'bottom-right',
   autoClose: 7000,
   hideProgressBar: false,
   closeOnClick: true,
   pauseOnHover: true,
   draggable: true,
   progress: undefined,
-  theme: "colored",
+  theme: 'colored',
   transition: Bounce,
-}
+};
