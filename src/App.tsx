@@ -1,6 +1,12 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { ForgotPassword, Home, Register, ResetPassword, Wallet } from './pages';
+import {
+  ForgotPassword,
+  Home,
+  Register,
+  ResetPassword,
+  WalletPage,
+} from './pages';
 import AuthRoute from './components/AuthRoute';
 import 'react-toastify/dist/ReactToastify.css';
 import QueryAuthRoute from './components/QueryAuthRoute';
@@ -17,7 +23,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
         <Route element={<AuthRoute />}>
-          <Route path="/wallet" element={<Wallet />} />
+          <Route path="/wallet" element={<WalletPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

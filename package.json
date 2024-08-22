@@ -1,6 +1,6 @@
 {
   "name": "front-dev-financial-organizer",
-  "version": "1.5.2",
+  "version": "2.6.2",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.13.0",

@@ -21,8 +21,12 @@ import { WalletFormInput, walletSchema } from '../schemas';
 import { FC, SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { useSessionStorage, useWallet } from '../hooks';
 import { UpdateWalletEdit } from '../types';
+import { AxiosError } from 'axios';
+import { toast } from 'react-toastify';
+import { warning } from '../styles';
+import { getErrorMessage } from '../utils';
 
-export const Wallet: FC = () => {
+export const WalletPage: FC = () => {
   const [editItem, setEditItem] = useState<UpdateWalletEdit | null>(null);
   const {
     control,
@@ -104,7 +108,12 @@ export const Wallet: FC = () => {
   };
 
   const handleDelete = async (id: string) => {
-    await deleteEntryMutation.mutateAsync({ id, authorization });
+    try {
+      await deleteEntryMutation.mutateAsync({ id, authorization });
+    } catch (error) {
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.message, warning);
+    }
   };
 
   const formatValor = (valor: string) => {
