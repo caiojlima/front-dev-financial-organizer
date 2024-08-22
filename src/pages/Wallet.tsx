@@ -22,7 +22,7 @@ import { FC, SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { useSessionStorage, useWallet } from '../hooks';
 import { UpdateWalletEdit } from '../types';
 
-const MaterialUITableWithForm: FC = () => {
+export const Wallet: FC = () => {
   const [editItem, setEditItem] = useState<UpdateWalletEdit | null>(null);
   const {
     control,
@@ -310,5 +310,3 @@ const MaterialUITableWithForm: FC = () => {
     </Box>
   );
 };
-
-export default MaterialUITableWithForm;

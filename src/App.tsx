@@ -1,8 +1,9 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { ForgotPassword, Home, Register, ResetPassword } from './pages';
+import { ForgotPassword, Home, Register, ResetPassword, Wallet } from './pages';
+import AuthRoute from './components/AuthRoute';
 import 'react-toastify/dist/ReactToastify.css';
-import MaterialUITableWithForm from './pages/Wallet';
+import QueryAuthRoute from './components/QueryAuthRoute';
 
 function App() {
   return (
@@ -12,8 +13,13 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/wallet" element={<MaterialUITableWithForm />} />
+        <Route element={<QueryAuthRoute />}>
+          <Route path="/reset-password" element={<ResetPassword />} />
+        </Route>
+        <Route element={<AuthRoute />}>
+          <Route path="/wallet" element={<Wallet />} />
+        </Route>
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
   );
