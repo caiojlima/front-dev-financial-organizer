@@ -1,3 +1,5 @@
+import { UseMutationResult } from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
 import { User } from './user.type';
 
 export type CreateWalletEntryBody = {
@@ -44,4 +46,23 @@ export type UpdateWalletEdit = {
 export type DeleteWalletEntry = {
   authorization: string;
   id: string;
+};
+
+export type WalletInputProps = {
+  editItem: UpdateWalletEdit | null;
+  setEditItem: React.Dispatch<React.SetStateAction<UpdateWalletEdit | null>>;
+  descriptionInputRef: React.RefObject<HTMLInputElement>;
+  isLoading: boolean;
+  sendWalletEntryMutation: UseMutationResult<
+    AxiosResponse<any, any>,
+    Error,
+    CreateWalletEntryBody,
+    unknown
+  >;
+  updateEntryMutation: UseMutationResult<
+    AxiosResponse<any, any>,
+    Error,
+    UpdateWalletEntry,
+    unknown
+  >;
 };

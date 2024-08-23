@@ -5,3 +5,4 @@ export * from './ForgotPasswordForm';
 export * from './ResetPasswordForm';
 export * from './AuthRoute';
 export * from './QueryAuthRoute';
+export * from './WalletInput';

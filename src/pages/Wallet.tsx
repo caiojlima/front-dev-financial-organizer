@@ -1,4 +1,3 @@
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import {
   Table,
   TableBody,
@@ -7,96 +6,33 @@ import {
   TableHead,
   TableRow,
   Paper,
-  TextField,
-  Button,
-  Typography,
   Box,
   IconButton,
 } from '@mui/material';
-import { zodResolver } from '@hookform/resolvers/zod';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { format, parseISO } from 'date-fns';
-import { WalletFormInput, walletSchema } from '../schemas';
-import { FC, SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { useSessionStorage, useWallet } from '../hooks';
 import { UpdateWalletEdit } from '../types';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { warning } from '../styles';
+import { WalletInput } from '../components';
+import { CalculationHelper } from '../utils';
 
 export const WalletPage: FC = () => {
   const [editItem, setEditItem] = useState<UpdateWalletEdit | null>(null);
-  const {
-    control,
-    handleSubmit,
-    reset,
-    setValue,
-    formState: { errors },
-  } = useForm<WalletFormInput>({
-    resolver: zodResolver(walletSchema),
-    defaultValues: {
-      description: '',
-      value: '',
-      paymentMethod: '',
-    },
-  });
-
-  const descriptionInputRef = useRef<HTMLInputElement>(null);
-
   const { getToken } = useSessionStorage();
-
   const authorization = getToken() ?? '';
-
+  const descriptionInputRef = useRef<HTMLInputElement>(null);
   const {
-    sendWalletEntryMutation,
-    updateEntryMutation,
     deleteEntryMutation,
     entries,
-    total,
     isLoading,
+    sendWalletEntryMutation,
+    updateEntryMutation,
   } = useWallet({ authorization });
-
-  useEffect(() => {
-    if (editItem) {
-      setValue('description', editItem.description);
-      setValue('value', editItem.value.replace('-', ''));
-      setValue('paymentMethod', editItem.paymentMethod);
-    }
-  }, [editItem, setValue]);
-
-  const onSubmit: SubmitHandler<WalletFormInput> = async (
-    { description, value: stringValue, paymentMethod },
-    event,
-  ) => {
-    const newEvent = event as SyntheticEvent<HTMLFormElement, SubmitEvent>;
-    const buttonId = newEvent?.nativeEvent.submitter?.id;
-
-    const value = buttonId?.includes('gain')
-      ? Math.abs(parseFloat(stringValue.replace(',', '.')))
-      : -parseFloat(stringValue.replace(',', '.'));
-
-    if (editItem) {
-      updateEntryMutation.mutateAsync({
-        id: editItem.id.toString(),
-        description,
-        value,
-        paymentMethod,
-        authorization,
-      });
-
-      setEditItem(null);
-    } else {
-      await sendWalletEntryMutation.mutateAsync({
-        description,
-        paymentMethod,
-        value,
-        authorization,
-      });
-    }
-
-    reset();
-  };
 
   const handleEdit = async (entry: UpdateWalletEdit) => {
     setEditItem(entry);
@@ -116,138 +52,16 @@ export const WalletPage: FC = () => {
     }
   };
 
-  const formatValor = (valor: string) => {
-    const numero = parseFloat(valor.replace('R$', '').replace(',', '.'));
-    const valorFormatado =
-      numero < 0
-        ? `-R$${Math.abs(numero).toFixed(2).replace('.', ',')}`
-        : `R$${numero.toFixed(2).replace('.', ',')}`;
-    return valorFormatado;
-  };
-
-  const getTotalLabel = () =>
-    `Total: ${total ? formatValor(total.toString()) : 0}`;
-
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        {editItem ? 'Editar Item' : 'Adicionar Novo Item'}
-      </Typography>
-
-      <Box
-        sx={{
-          mb: 2,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 2,
-        }}
-      >
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          style={{
-            display: 'flex',
-            width: '100%',
-            gap: '10px',
-            alignItems: 'center',
-          }}
-        >
-          <Controller
-            name="description"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                label="Descrição"
-                variant="outlined"
-                {...field}
-                autoFocus
-                ref={descriptionInputRef}
-                error={!!errors.description}
-                helperText={errors.description?.message}
-                sx={{ flex: 3 }}
-              />
-            )}
-          />
-          <Controller
-            name="value"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                label="Valor"
-                variant="outlined"
-                {...field}
-                error={!!errors.value}
-                helperText={errors.value?.message}
-                sx={{ flex: 2 }}
-              />
-            )}
-          />
-          <Controller
-            name="paymentMethod"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                label="Método de Pagamento"
-                variant="outlined"
-                {...field}
-                error={!!errors.paymentMethod}
-                helperText={errors.paymentMethod?.message}
-                sx={{ flex: 2 }}
-              />
-            )}
-          />
-          <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-            <Button
-              id={editItem ? 'edit-gain' : 'gain'}
-              sx={{ width: '100%', mb: 1 }}
-              variant="contained"
-              color="success"
-              type="submit"
-              disabled={isLoading}
-            >
-              {editItem ? 'Editar' : 'Ganho'}
-            </Button>
-            <Button
-              id={editItem ? 'edit-expense' : 'expense'}
-              variant="contained"
-              color="error"
-              type="submit"
-              disabled={isLoading}
-            >
-              {editItem ? 'Editar' : 'Despesa'}
-            </Button>
-          </Box>
-        </form>
-
-        <Typography
-          variant="h6"
-          sx={{
-            color: total && total < 0 ? 'red' : 'green',
-            fontWeight: 'bold',
-            textAlign: 'right',
-            flex: 1,
-          }}
-        >
-          {editItem ? (
-            <Button
-              id={editItem ? 'edit-gain' : 'gain'}
-              sx={{ width: '100%', mb: 1 }}
-              variant="contained"
-              color="secondary"
-              disabled={isLoading}
-              onClick={() => {
-                setEditItem(null);
-                reset();
-              }}
-            >
-              Cancelar
-            </Button>
-          ) : (
-            getTotalLabel()
-          )}
-        </Typography>
-      </Box>
-
+      <WalletInput
+        editItem={editItem}
+        setEditItem={setEditItem}
+        descriptionInputRef={descriptionInputRef}
+        sendWalletEntryMutation={sendWalletEntryMutation}
+        updateEntryMutation={updateEntryMutation}
+        isLoading={isLoading}
+      />
       <TableContainer component={Paper} sx={{ mb: 3 }}>
         <Table>
           <TableHead>
@@ -286,7 +100,7 @@ export const WalletPage: FC = () => {
                           : 'green',
                     }}
                   >
-                    {formatValor(value)}
+                    {CalculationHelper.formatValue(value)}
                   </TableCell>
                   <TableCell sx={{ textAlign: 'center' }}>
                     {paymentMethod}
