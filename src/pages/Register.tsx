@@ -6,7 +6,7 @@ import { RegisterForm, Title } from '../components';
 export const Register = () => {
   return (
     <Box sx={homeContainerStyle}>
-      <Box sx={firstBoxStyle}>
+      <Box sx={firstBoxStyle} display={{ xs: 'none', md: 'flex' }}>
         <img src={registerImg} alt="register-img" width="60%" />
       </Box>
       <Box sx={secondBoxStyle}>

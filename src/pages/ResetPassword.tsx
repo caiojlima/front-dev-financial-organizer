@@ -6,7 +6,7 @@ import { Title, ResetPasswordForm } from '../components';
 export const ResetPassword = () => {
   return (
     <Box sx={homeContainerStyle}>
-      <Box sx={firstBoxStyle}>
+      <Box sx={firstBoxStyle} display={{ xs: 'none', md: 'flex' }}>
         <img src={forgotPasswordImg} alt="home-img" width="65%" />
       </Box>
       <Box sx={secondBoxStyle}>
