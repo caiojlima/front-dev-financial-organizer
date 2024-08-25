@@ -18,7 +18,7 @@ import { UpdateWalletEdit } from '../types';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { warning } from '../styles';
-import { WalletInput } from '../components';
+import { WalletInput, WalletNavBar } from '../components';
 import { CalculationHelper } from '../utils';
 
 export const WalletPage: FC = () => {
@@ -53,88 +53,102 @@ export const WalletPage: FC = () => {
   };
 
   return (
-    <Box sx={{ p: 3 }}>
-      <WalletInput
-        editItem={editItem}
-        setEditItem={setEditItem}
-        descriptionInputRef={descriptionInputRef}
-        sendWalletEntryMutation={sendWalletEntryMutation}
-        updateEntryMutation={updateEntryMutation}
-        isLoading={isLoading}
-      />
-      <TableContainer component={Paper} sx={{ mb: 3 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ width: '25%', textAlign: 'center' }}>
-                <b>Descrição</b>
-              </TableCell>
-              <TableCell sx={{ width: '15%', textAlign: 'center' }}>
-                <b>Valor</b>
-              </TableCell>
-              <TableCell sx={{ width: '20%', textAlign: 'center' }}>
-                <b>Método de Pagamento</b>
-              </TableCell>
-              <TableCell sx={{ width: '15%', textAlign: 'center' }}>
-                <b>Data</b>
-              </TableCell>
-              <TableCell sx={{ width: '10%', textAlign: 'center' }}>
-                <b>Ações</b>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {entries?.map(
-              ({ id, description, value, paymentMethod, createdAt }) => (
-                <TableRow key={id}>
-                  <TableCell sx={{ textAlign: 'center' }}>
-                    {description}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      textAlign: 'center',
-                      color:
-                        parseFloat(value.replace('R$', '').replace(',', '.')) <
-                        0
-                          ? 'red'
-                          : 'green',
-                    }}
-                  >
-                    {CalculationHelper.formatValue(value)}
-                  </TableCell>
-                  <TableCell sx={{ textAlign: 'center' }}>
-                    {paymentMethod}
-                  </TableCell>
-                  <TableCell sx={{ textAlign: 'center' }}>
-                    {format(parseISO(createdAt), 'dd/MM/yyyy')}
-                  </TableCell>
-                  <TableCell
-                    sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}
-                  >
-                    <IconButton
-                      disabled={isLoading}
-                      onClick={() =>
-                        handleEdit({ id, description, value, paymentMethod })
-                      }
-                      id={id.toString()}
+    <Box>
+      <WalletNavBar />
+      <Box sx={{ p: 3 }}>
+        <WalletInput
+          editItem={editItem}
+          setEditItem={setEditItem}
+          descriptionInputRef={descriptionInputRef}
+          sendWalletEntryMutation={sendWalletEntryMutation}
+          updateEntryMutation={updateEntryMutation}
+          isLoading={isLoading}
+        />
+        <TableContainer component={Paper} sx={{ mb: 3 }}>
+          <Table>
+            <TableHead>
+              <TableRow sx={{ backgroundColor: 'green' }}>
+                <TableCell
+                  sx={{ width: '25%', textAlign: 'center', color: 'white' }}
+                >
+                  <b>Descrição</b>
+                </TableCell>
+                <TableCell
+                  sx={{ width: '15%', textAlign: 'center', color: 'white' }}
+                >
+                  <b>Valor</b>
+                </TableCell>
+                <TableCell
+                  sx={{ width: '20%', textAlign: 'center', color: 'white' }}
+                >
+                  <b>Método de Pagamento</b>
+                </TableCell>
+                <TableCell
+                  sx={{ width: '15%', textAlign: 'center', color: 'white' }}
+                >
+                  <b>Data</b>
+                </TableCell>
+                <TableCell
+                  sx={{ width: '10%', textAlign: 'center', color: 'white' }}
+                >
+                  <b>Ações</b>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {entries?.map(
+                ({ id, description, value, paymentMethod, createdAt }) => (
+                  <TableRow key={id}>
+                    <TableCell sx={{ textAlign: 'center' }}>
+                      {description}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        textAlign: 'center',
+                        color:
+                          parseFloat(
+                            value.replace('R$', '').replace(',', '.'),
+                          ) < 0
+                            ? 'red'
+                            : 'green',
+                      }}
                     >
-                      <EditIcon sx={{ color: 'orange' }} />
-                    </IconButton>
-                    <IconButton
-                      disabled={isLoading}
-                      onClick={() => handleDelete(id.toString())}
-                      color="error"
-                      id={id.toString()}
+                      {CalculationHelper.formatValue(value)}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center' }}>
+                      {paymentMethod}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center' }}>
+                      {format(parseISO(createdAt), 'dd/MM/yyyy')}
+                    </TableCell>
+                    <TableCell
+                      sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}
                     >
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ),
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                      <IconButton
+                        disabled={isLoading}
+                        onClick={() =>
+                          handleEdit({ id, description, value, paymentMethod })
+                        }
+                        id={id.toString()}
+                      >
+                        <EditIcon sx={{ color: 'orange' }} />
+                      </IconButton>
+                      <IconButton
+                        disabled={isLoading}
+                        onClick={() => handleDelete(id.toString())}
+                        color="error"
+                        id={id.toString()}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ),
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </Box>
   );
 };

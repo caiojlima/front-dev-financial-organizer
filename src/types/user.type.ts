@@ -11,3 +11,10 @@ export type User = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type UserToken = {
+  sub: number;
+  name: string;
+  email: string;
+  role: string;
+};

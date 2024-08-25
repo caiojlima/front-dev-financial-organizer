@@ -80,123 +80,118 @@ export const WalletInput = ({
   }, [editItem, setValue]);
 
   return (
-    <>
-      <Typography variant="h4" gutterBottom>
-        {editItem ? 'Editar Item' : 'Adicionar Novo Item'}
-      </Typography>
-      <Box
-        sx={{
-          mb: 2,
+    <Box
+      sx={{
+        mb: 2,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 2,
+      }}
+    >
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        style={{
           display: 'flex',
+          width: '100%',
+          gap: '10px',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 2,
         }}
       >
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          style={{
-            display: 'flex',
-            width: '100%',
-            gap: '10px',
-            alignItems: 'center',
-          }}
-        >
-          <Controller
-            name="description"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                label="Descrição"
-                variant="outlined"
-                {...field}
-                autoFocus
-                ref={descriptionInputRef}
-                error={!!errors.description}
-                helperText={errors.description?.message}
-                sx={{ flex: 3 }}
-              />
-            )}
-          />
-          <Controller
-            name="value"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                label="Valor"
-                variant="outlined"
-                {...field}
-                error={!!errors.value}
-                helperText={errors.value?.message}
-                sx={{ flex: 2 }}
-              />
-            )}
-          />
-          <Controller
-            name="paymentMethod"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                label="Método de Pagamento"
-                variant="outlined"
-                {...field}
-                error={!!errors.paymentMethod}
-                helperText={errors.paymentMethod?.message}
-                sx={{ flex: 2 }}
-              />
-            )}
-          />
-          <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-            <Button
-              id={editItem ? 'edit-gain' : 'gain'}
-              sx={{ width: '100%', mb: 1 }}
-              variant="contained"
-              color="success"
-              type="submit"
-              disabled={isLoading}
-            >
-              {editItem ? 'Editar' : 'Ganho'}
-            </Button>
-            <Button
-              id={editItem ? 'edit-expense' : 'expense'}
-              variant="contained"
-              color="error"
-              type="submit"
-              disabled={isLoading}
-            >
-              {editItem ? 'Editar' : 'Despesa'}
-            </Button>
-          </Box>
-        </form>
-
-        <Typography
-          variant="h6"
-          sx={{
-            color: total && total < 0 ? 'red' : 'green',
-            fontWeight: 'bold',
-            textAlign: 'right',
-            flex: 1,
-          }}
-        >
-          {editItem ? (
-            <Button
-              id={editItem ? 'edit-gain' : 'gain'}
-              sx={{ width: '100%', mb: 1 }}
-              variant="contained"
-              color="secondary"
-              disabled={isLoading}
-              onClick={() => {
-                setEditItem(null);
-                reset();
-              }}
-            >
-              Cancelar
-            </Button>
-          ) : (
-            getTotalLabel()
+        <Controller
+          name="description"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Descrição"
+              variant="outlined"
+              {...field}
+              autoFocus
+              ref={descriptionInputRef}
+              error={!!errors.description}
+              helperText={errors.description?.message}
+              sx={{ flex: 3 }}
+            />
           )}
-        </Typography>
-      </Box>
-    </>
+        />
+        <Controller
+          name="value"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Valor"
+              variant="outlined"
+              {...field}
+              error={!!errors.value}
+              helperText={errors.value?.message}
+              sx={{ flex: 2 }}
+            />
+          )}
+        />
+        <Controller
+          name="paymentMethod"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Método de Pagamento"
+              variant="outlined"
+              {...field}
+              error={!!errors.paymentMethod}
+              helperText={errors.paymentMethod?.message}
+              sx={{ flex: 2 }}
+            />
+          )}
+        />
+        <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+          <Button
+            id={editItem ? 'edit-gain' : 'gain'}
+            sx={{ width: '100%', mb: 1 }}
+            variant="contained"
+            color="success"
+            type="submit"
+            disabled={isLoading}
+          >
+            {editItem ? 'Editar' : 'Ganho'}
+          </Button>
+          <Button
+            id={editItem ? 'edit-expense' : 'expense'}
+            variant="contained"
+            color="error"
+            type="submit"
+            disabled={isLoading}
+          >
+            {editItem ? 'Editar' : 'Despesa'}
+          </Button>
+        </Box>
+      </form>
+
+      <Typography
+        variant="h6"
+        sx={{
+          color: total && total < 0 ? 'red' : 'green',
+          fontWeight: 'bold',
+          textAlign: 'right',
+          flex: 1,
+        }}
+      >
+        {editItem ? (
+          <Button
+            id={editItem ? 'edit-gain' : 'gain'}
+            sx={{ width: '100%', mb: 1 }}
+            variant="contained"
+            color="secondary"
+            disabled={isLoading}
+            onClick={() => {
+              setEditItem(null);
+              reset();
+            }}
+          >
+            Cancelar
+          </Button>
+        ) : (
+          getTotalLabel()
+        )}
+      </Typography>
+    </Box>
   );
 };

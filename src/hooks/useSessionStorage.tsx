@@ -7,5 +7,9 @@ export const useSessionStorage = () => {
     return sessionStorage.getItem('accessToken');
   };
 
-  return { getToken, setToken };
+  const clear = () => {
+    sessionStorage.clear();
+  };
+
+  return { getToken, setToken, clear };
 };
