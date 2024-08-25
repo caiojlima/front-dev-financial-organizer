@@ -31,6 +31,7 @@ export function WalletNavBar() {
 
   const logout = () => {
     clear();
+    window.location.reload();
   };
 
   const menuId = 'primary-search-account-menu';
