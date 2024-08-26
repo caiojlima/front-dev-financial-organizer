@@ -115,6 +115,7 @@ export const ResetPasswordForm = () => {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={resetPasswordMutation.isPending}
               sx={{
                 mt: 3,
                 mb: 0.4,

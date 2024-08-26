@@ -119,6 +119,7 @@ export const LoginForm = () => {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={loginMutation.isPending}
               sx={{
                 mt: 3,
                 mb: 2,

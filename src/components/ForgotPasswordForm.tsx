@@ -97,6 +97,7 @@ export const ForgotPasswordForm = () => {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={forgotPasswordMutation.isPending}
               sx={{
                 mt: 3,
                 mb: 0.4,

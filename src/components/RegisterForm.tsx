@@ -135,6 +135,7 @@ export const RegisterForm = () => {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={userRegisterMutation.isPending}
               sx={{
                 mt: 3,
                 mb: 0.4,

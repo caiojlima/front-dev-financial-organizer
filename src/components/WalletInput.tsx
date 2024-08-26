@@ -6,6 +6,7 @@ import { SyntheticEvent, useEffect } from 'react';
 import { WalletInputProps } from '../types';
 import { useSessionStorage, useWallet } from '../hooks';
 import { CalculationHelper } from '../utils';
+import { Loading } from './Loading';
 
 export const WalletInput = ({
   editItem,
@@ -192,6 +193,7 @@ export const WalletInput = ({
           getTotalLabel()
         )}
       </Typography>
+      {isLoading && <Loading />}
     </Box>
   );
 };
