@@ -17,7 +17,7 @@ export const Loading: React.FC = () => {
       bgcolor="rgba(0, 0, 0, 0.3)"
       zIndex={9999}
     >
-      <CircularProgress />
+      <CircularProgress sx={{ color: 'green' }} />
     </Box>,
     document.body,
   );
