@@ -7,3 +7,4 @@ export * from './AuthRoute';
 export * from './QueryAuthRoute';
 export * from './WalletNavBar';
 export * from './WalletInput';
+export * from './TableFilter';

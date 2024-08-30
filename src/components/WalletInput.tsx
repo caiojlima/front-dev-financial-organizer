@@ -90,7 +90,7 @@ export const WalletInput = ({
   return (
     <Box
       sx={{
-        mb: 2,
+        mb: 5,
         display: 'flex',
         flexDirection: matches ? 'row' : 'column',
         alignItems: 'center',

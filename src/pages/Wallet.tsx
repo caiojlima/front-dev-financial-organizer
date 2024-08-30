@@ -11,18 +11,19 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { format, parseISO } from 'date-fns';
-import { FC, useRef, useState } from 'react';
+import { addDays, format, isAfter, isWithinInterval, parseISO } from 'date-fns';
+import { FC, useEffect, useRef, useState } from 'react';
 import { useSessionStorage, useWallet } from '../hooks';
-import { UpdateWalletEdit } from '../types';
+import { UpdateWalletEdit, Wallet } from '../types';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { warning } from '../styles';
-import { WalletInput, WalletNavBar } from '../components';
+import { TableFilter, WalletInput, WalletNavBar } from '../components';
 import { CalculationHelper } from '../utils';
 
 export const WalletPage: FC = () => {
   const [editItem, setEditItem] = useState<UpdateWalletEdit | null>(null);
+  const [filteredEntries, setFilteredEntries] = useState<Wallet[]>();
   const { getToken } = useSessionStorage();
   const authorization = getToken() ?? '';
   const descriptionInputRef = useRef<HTMLInputElement>(null);
@@ -33,6 +34,10 @@ export const WalletPage: FC = () => {
     sendWalletEntryMutation,
     updateEntryMutation,
   } = useWallet({ authorization });
+
+  useEffect(() => {
+    if (!filteredEntries) setFilteredEntries(entries);
+  }, [entries]);
 
   const handleEdit = async (entry: UpdateWalletEdit) => {
     setEditItem(entry);
@@ -52,6 +57,29 @@ export const WalletPage: FC = () => {
     }
   };
 
+  const handleSearch = (text: string) => {
+    if (!text) return setFilteredEntries(entries);
+
+    const filteredArray = filteredEntries?.filter((entry) =>
+      entry.description.includes(text),
+    );
+
+    setFilteredEntries(filteredArray);
+  };
+
+  const handlePeriod = (start: Date | null, end: Date | null) => {
+    if (!start || !end || isAfter(start, end)) return;
+    console.log({ start, end });
+
+    const filteredArray = entries?.filter((entry) =>
+      isWithinInterval(new Date(entry.createdAt), {
+        start,
+        end: addDays(end, 1),
+      }),
+    );
+    setFilteredEntries(filteredArray);
+  };
+
   return (
     <Box>
       <WalletNavBar />
@@ -64,6 +92,7 @@ export const WalletPage: FC = () => {
           updateEntryMutation={updateEntryMutation}
           isLoading={isLoading}
         />
+        <TableFilter handleSearch={handleSearch} handlePeriod={handlePeriod} />
         <TableContainer component={Paper} sx={{ mb: 3 }}>
           <Table>
             <TableHead>
@@ -96,7 +125,7 @@ export const WalletPage: FC = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {entries?.map(
+              {filteredEntries?.map(
                 ({ id, description, value, paymentMethod, createdAt }) => (
                   <TableRow key={id}>
                     <TableCell sx={{ textAlign: 'center' }}>
