@@ -41,7 +41,7 @@ export const WalletPage: FC = () => {
   } = useWallet({ authorization });
 
   useEffect(() => {
-    if (!filteredEntries) setFilteredEntries(entries);
+    setFilteredEntries(entries);
   }, [entries]);
 
   const handleEdit = async (entry: UpdateWalletEdit) => {
