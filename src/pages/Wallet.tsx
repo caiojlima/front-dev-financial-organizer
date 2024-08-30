@@ -19,7 +19,9 @@ import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { warning } from '../styles';
 import { TableFilter, WalletInput, WalletNavBar } from '../components';
-import { CalculationHelper } from '../utils';
+import { CalculationHelper, JwtHelper } from '../utils';
+import ExcelJS from 'exceljs';
+import { saveAs } from 'file-saver';
 
 export const WalletPage: FC = () => {
   const [editItem, setEditItem] = useState<UpdateWalletEdit | null>(null);
@@ -33,6 +35,7 @@ export const WalletPage: FC = () => {
     isLoading,
     sendWalletEntryMutation,
     updateEntryMutation,
+    total,
   } = useWallet({ authorization });
 
   useEffect(() => {
@@ -80,6 +83,58 @@ export const WalletPage: FC = () => {
     setFilteredEntries(filteredArray);
   };
 
+  const handleDownload = async (
+    initialDate: Date | null,
+    endDate: Date | null,
+  ) => {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Expenses');
+
+    worksheet.columns = [
+      { header: 'Descrição', key: 'description', width: 40 },
+      { header: 'Data', key: 'date', width: 30 },
+      { header: 'Método de Pagamento', key: 'paymentMethod', width: 30 },
+      { header: 'Valor', key: 'value', width: 30 },
+    ];
+
+    filteredEntries?.forEach((entry) => {
+      const addedRow = worksheet.addRow({
+        description: entry.description,
+        value: CalculationHelper.formatValue(entry.value),
+        paymentMethod: entry.paymentMethod,
+        date: format(parseISO(entry.createdAt), 'dd/MM/yyyy'),
+      });
+      const valueCell = addedRow.getCell('value');
+      valueCell.font = {
+        color: { argb: Number(entry.value) < 0 ? 'FFFF0000' : 'FF00FF00' },
+      };
+    });
+
+    worksheet.getRow(1).font = { bold: true };
+
+    worksheet.addRow({
+      description: 'Total',
+      value: CalculationHelper.formatValue(total!.toString()),
+    });
+
+    const lastRow = worksheet.lastRow!;
+
+    lastRow.font = { bold: true };
+
+    lastRow.getCell('value').font = {
+      color: { argb: total! < 0 ? 'FFFF0000' : 'FF00FF00' },
+    };
+    const buffer = await workbook.xlsx.writeBuffer();
+
+    const blob = new Blob([buffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+    saveAs(
+      blob,
+      `${JwtHelper.getUserFirstName(authorization)}-${format(parseISO(initialDate!.toISOString()), 'dd/MM/yyyy')}-${format(parseISO(endDate!.toISOString()), 'dd/MM/yyyy')}.xlsx`,
+    );
+  };
+
   return (
     <Box>
       <WalletNavBar />
@@ -92,7 +147,11 @@ export const WalletPage: FC = () => {
           updateEntryMutation={updateEntryMutation}
           isLoading={isLoading}
         />
-        <TableFilter handleSearch={handleSearch} handlePeriod={handlePeriod} />
+        <TableFilter
+          handleSearch={handleSearch}
+          handlePeriod={handlePeriod}
+          handleDownload={handleDownload}
+        />
         <TableContainer component={Paper} sx={{ mb: 3 }}>
           <Table>
             <TableHead>
