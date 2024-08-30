@@ -8,6 +8,7 @@ import {
   Paper,
   Box,
   IconButton,
+  useMediaQuery,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -27,6 +28,7 @@ export const WalletPage: FC = () => {
   const [editItem, setEditItem] = useState<UpdateWalletEdit | null>(null);
   const [filteredEntries, setFilteredEntries] = useState<Wallet[]>();
   const { getToken } = useSessionStorage();
+  const matches = useMediaQuery('(min-width:600px)');
   const authorization = getToken() ?? '';
   const descriptionInputRef = useRef<HTMLInputElement>(null);
   const {
@@ -72,7 +74,6 @@ export const WalletPage: FC = () => {
 
   const handlePeriod = (start: Date | null, end: Date | null) => {
     if (!start || !end || isAfter(start, end)) return;
-    console.log({ start, end });
 
     const filteredArray = entries?.filter((entry) =>
       isWithinInterval(new Date(entry.createdAt), {
@@ -147,11 +148,13 @@ export const WalletPage: FC = () => {
           updateEntryMutation={updateEntryMutation}
           isLoading={isLoading}
         />
-        <TableFilter
-          handleSearch={handleSearch}
-          handlePeriod={handlePeriod}
-          handleDownload={handleDownload}
-        />
+        {matches && (
+          <TableFilter
+            handleSearch={handleSearch}
+            handlePeriod={handlePeriod}
+            handleDownload={handleDownload}
+          />
+        )}
         <TableContainer component={Paper} sx={{ mb: 3 }}>
           <Table>
             <TableHead>

@@ -1,10 +1,18 @@
-import { Box, Button, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import DownloadForOfflineOutlinedIcon from '@mui/icons-material/DownloadForOfflineOutlined';
 import { endOfMonth, startOfMonth } from 'date-fns';
+import { CalculationHelper } from '../utils';
+import { useSessionStorage, useWallet } from '../hooks';
 
 type TableFilterProps = {
   handleSearch: (text: string) => void;
@@ -22,6 +30,13 @@ export const TableFilter = ({
     startOfMonth(new Date()),
   );
   const [endDate, setEndDate] = useState<Date | null>(endOfMonth(new Date()));
+  const matches = useMediaQuery('(min-width:1330px)');
+
+  const { getToken } = useSessionStorage();
+
+  const authorization = getToken() ?? '';
+
+  const { total } = useWallet({ authorization });
 
   const handleInputChange = (text: string) => {
     handleSearch(text);
@@ -31,6 +46,9 @@ export const TableFilter = ({
   useEffect(() => {
     handlePeriod(initialDate, endDate);
   }, [initialDate, endDate]);
+
+  const getTotalLabel = () =>
+    `Total: ${total ? CalculationHelper.formatValue(total.toString()) : 0}`;
 
   return (
     <Box
@@ -66,14 +84,27 @@ export const TableFilter = ({
           format="dd/MM/yyyy"
         />
       </LocalizationProvider>
-      <Button
-        variant="contained"
-        color="success"
-        startIcon={<DownloadForOfflineOutlinedIcon />}
-        onClick={() => handleDownload(initialDate, endDate)}
+      {matches && (
+        <Button
+          variant="contained"
+          color="success"
+          startIcon={<DownloadForOfflineOutlinedIcon />}
+          onClick={() => handleDownload(initialDate, endDate)}
+        >
+          DOWNLOAD EXCEL
+        </Button>
+      )}
+      <Typography
+        variant="h6"
+        sx={{
+          color: total && total < 0 ? 'red' : 'green',
+          fontWeight: 'bold',
+          textAlign: 'right',
+          flex: 1,
+        }}
       >
-        DOWNLOAD EXCEL
-      </Button>
+        {getTotalLabel()}
+      </Typography>
     </Box>
   );
 };

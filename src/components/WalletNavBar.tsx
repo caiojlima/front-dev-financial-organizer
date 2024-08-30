@@ -13,9 +13,7 @@ import { JwtHelper } from '../utils';
 
 export function WalletNavBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const { clear } = useSessionStorage();
-  const { getToken } = useSessionStorage();
+  const { getToken, clear } = useSessionStorage();
 
   const authorization = getToken();
 

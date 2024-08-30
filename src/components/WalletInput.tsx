@@ -1,10 +1,4 @@
-import {
-  Box,
-  TextField,
-  Button,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import { Box, TextField, Button, useMediaQuery } from '@mui/material';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { WalletFormInput, walletSchema } from '../schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -181,7 +175,7 @@ export const WalletInput = ({
           </Button>
         </Box>
       </form>
-      {editItem ? (
+      {editItem && (
         <Button
           id={editItem ? 'edit-gain' : 'gain'}
           sx={{ width: matches ? null : '100%', mb: 1 }}
@@ -195,18 +189,6 @@ export const WalletInput = ({
         >
           Cancelar
         </Button>
-      ) : (
-        <Typography
-          variant="h6"
-          sx={{
-            color: total && total < 0 ? 'red' : 'green',
-            fontWeight: 'bold',
-            textAlign: 'right',
-            flex: 1,
-          }}
-        >
-          {getTotalLabel()}
-        </Typography>
       )}
       {isLoading && <Loading />}
     </Box>
