@@ -1,6 +1,7 @@
 import {
   Avatar,
   Button,
+  CircularProgress,
   Grid,
   Link,
   Paper,
@@ -127,7 +128,11 @@ export const LoginForm = () => {
                 '&:hover': { backgroundColor: 'green' },
               }}
             >
-              Entrar
+              {loginMutation.isPending ? (
+                <CircularProgress sx={{ color: 'green' }} />
+              ) : (
+                'Entrar'
+              )}
             </Button>
             <Grid container sx={{ mb: 2 }}>
               <Grid item xs>
