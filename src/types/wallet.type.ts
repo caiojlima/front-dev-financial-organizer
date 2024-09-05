@@ -66,3 +66,12 @@ export type WalletInputProps = {
     unknown
   >;
 };
+
+export const SelectOptions = [
+  'PIX',
+  'CARTÃO DE CRÉDITO',
+  'CARTÃO DE DÉBITO',
+  'DINHEIRO',
+  'TED',
+  'OUTROS',
+];

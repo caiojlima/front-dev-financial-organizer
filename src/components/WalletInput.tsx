@@ -1,11 +1,10 @@
-import { Box, TextField, Button, useMediaQuery } from '@mui/material';
+import { Box, TextField, Button, useMediaQuery, MenuItem } from '@mui/material';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { WalletFormInput, walletSchema } from '../schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SyntheticEvent, useEffect } from 'react';
-import { WalletInputProps } from '../types';
-import { useSessionStorage, useWallet } from '../hooks';
-import { CalculationHelper } from '../utils';
+import { SelectOptions, WalletInputProps } from '../types';
+import { useSessionStorage } from '../hooks';
 import { Loading } from './Loading';
 
 export const WalletInput = ({
@@ -19,9 +18,6 @@ export const WalletInput = ({
   const matches = useMediaQuery('(min-width:600px)');
   const { getToken } = useSessionStorage();
   const authorization = getToken() ?? '';
-  const { total } = useWallet({
-    authorization,
-  });
   const {
     control,
     handleSubmit,
@@ -69,9 +65,6 @@ export const WalletInput = ({
 
     reset();
   };
-
-  const getTotalLabel = () =>
-    `Total: ${total ? CalculationHelper.formatValue(total.toString()) : 0}`;
 
   useEffect(() => {
     if (editItem) {
@@ -137,13 +130,21 @@ export const WalletInput = ({
           control={control}
           render={({ field }) => (
             <TextField
+              select
               label="Método de Pagamento"
               variant="outlined"
               {...field}
               error={!!errors.paymentMethod}
               helperText={errors.paymentMethod?.message}
+              defaultValue={'PIX'}
               sx={{ flex: 2, width: '100%' }}
-            />
+            >
+              {SelectOptions.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
           )}
         />
         <Box

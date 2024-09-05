@@ -10,9 +10,7 @@ export const walletSchema = z.object({
     .refine((value) => Number(value.replace(',', '.')), {
       message: 'Digite um valor válido',
     }),
-  paymentMethod: z
-    .string()
-    .min(3, 'O método de pagamento deve ter pelo menos 3 caracteres'),
+  paymentMethod: z.string().min(3, 'O método de pagamento é obrigatório'),
 });
 
 export type WalletFormInput = z.infer<typeof walletSchema>;
