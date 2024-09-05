@@ -10,7 +10,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import DownloadForOfflineOutlinedIcon from '@mui/icons-material/DownloadForOfflineOutlined';
-import { endOfMonth, startOfMonth } from 'date-fns';
 import { CalculationHelper } from '../utils';
 import { useSessionStorage, useWallet } from '../hooks';
 
@@ -26,10 +25,8 @@ export const TableFilter = ({
   handleDownload,
 }: TableFilterProps) => {
   const [search, setSearch] = useState('');
-  const [initialDate, setInitialDate] = useState<Date | null>(
-    startOfMonth(new Date()),
-  );
-  const [endDate, setEndDate] = useState<Date | null>(endOfMonth(new Date()));
+  const [initialDate, setInitialDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const matches = useMediaQuery('(min-width:1330px)');
 
   const { getToken } = useSessionStorage();
