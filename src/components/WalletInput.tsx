@@ -69,7 +69,7 @@ export const WalletInput = ({
   useEffect(() => {
     if (editItem) {
       setValue('description', editItem.description);
-      setValue('value', editItem.value.replace('-', ''));
+      setValue('value', editItem.value.toString().replace('-', ''));
       setValue('paymentMethod', editItem.paymentMethod);
     }
   }, [editItem, setValue]);

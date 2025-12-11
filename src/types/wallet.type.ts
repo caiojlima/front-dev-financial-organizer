@@ -22,7 +22,7 @@ export type GetWalletEntriesParams = {
 export type Wallet = {
   id: number;
   description: string;
-  value: string;
+  value: number;
   paymentMethod: string;
   user: User;
   createdAt: string;
@@ -39,7 +39,7 @@ export type UpdateWalletEntry = CreateWalletEntryBody & { id: string };
 export type UpdateWalletEdit = {
   id: number;
   description: string;
-  value: string;
+  value: number;
   paymentMethod: string;
 };
 

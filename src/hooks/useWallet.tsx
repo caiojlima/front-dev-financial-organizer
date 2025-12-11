@@ -51,7 +51,7 @@ export const useWallet = ({
 
           prevCache.data.entries = prevCache.data.entries.map((entry) => {
             if (entry.id === result.data.id) {
-              prevValue = entry.value;
+              prevValue = entry.value.toString();
               return {
                 ...entry,
                 ...result.data,

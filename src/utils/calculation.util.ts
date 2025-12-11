@@ -1,5 +1,8 @@
 export class CalculationHelper {
-  public static readonly formatValue = (valor: string) => {
+  public static readonly formatValue = (valor: string | number) => {
+    if (typeof valor === 'number') {
+      valor = valor.toString();
+    }
     const number = parseFloat(valor.replace('R$', '').replace(',', '.'));
     const formatedValue =
       number < 0

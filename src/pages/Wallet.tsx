@@ -197,9 +197,7 @@ export const WalletPage: FC = () => {
                       sx={{
                         textAlign: 'center',
                         color:
-                          parseFloat(
-                            value.replace('R$', '').replace(',', '.'),
-                          ) < 0
+                            value < 0
                             ? 'red'
                             : 'green',
                       }}
